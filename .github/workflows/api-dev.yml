@@ -19,7 +19,12 @@ jobs:
           go-version: 1.18
 
       - name: Build
-        run: go build -v ./kem-api-go/...
+        run: | 
+          cd kem-api-go
+          go build -v ./...
+          
 
       - name: Test
-        run: go test -v ./kem-api-go/...
+        run: |
+          cd kem-api-go
+          go test -v ./...
