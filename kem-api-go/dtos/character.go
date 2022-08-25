@@ -1,14 +1,17 @@
 package dtos
 
+import "github.com/jackc/pgtype"
+
 type Character struct {
-	Name       string `json:"name"`
-	Class      string `json:"class"`
-	Level      int    `json:"level"`
-	Race       string `json:"race"`
-	Alignment  string `json:"alignment"`
-	Gender     string `json:"gender"`
-	AgeInYears int    `json:"ageInYears"`
-	Religion   string `json:"religion"`
+	ID         pgtype.UUID `json:"id"`
+	Name       string      `json:"name"`
+	Class      string      `json:"class"`
+	Level      int         `json:"level"`
+	Race       string      `json:"race"`
+	Alignment  string      `json:"alignment"`
+	Gender     string      `json:"gender"`
+	AgeInYears int         `json:"ageInYears"`
+	Religion   string      `json:"religion"`
 
 	Strength     int `json:"strength"`
 	Dexterity    int `json:"dexterity"`
