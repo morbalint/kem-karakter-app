@@ -46,7 +46,7 @@ workflows:
                 
                 # Test app
                 
-                got test -v ./...
+                go test -v ./...
                 
 
       - deploy-to-bitrise-io@2: {}
