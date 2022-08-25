@@ -44,6 +44,10 @@ workflows:
                 
                 go build -v ./...
                 
+                # Test app
+                
+                got test -v ./...
+                
 
       - deploy-to-bitrise-io@2: {}
 meta:
