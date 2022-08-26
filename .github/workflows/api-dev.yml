@@ -13,18 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.18
-
       - name: Build
-        run: | 
-          cd kem-api-go
-          go build -v ./...
+        run: docker build -f kem-api-go/dockerfile kem-api-go/
           
 
       - name: Test
         run: |
-          cd kem-api-go
-          go test -v ./...
+          docker build -f kem-api-go/unit-test.dockerfile -t kem-api-go-unit-test:${{ github.sha }}  kem-api-go/
+          docker run kem-api-go-unit-test:${{ github.sha }}
