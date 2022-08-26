@@ -37,13 +37,16 @@ workflows:
                 
                 docker version
                 
+
                 # Build app
                 
                 docker build -f kem-api-go/dockerfile kem-api-go/
-                
+
+
                 # Test app
                 
                 docker build -f kem-api-go/unit-test.dockerfile -t kem-api-go-unit-test:latest  kem-api-go/
+                
                 docker run kem-api-go-unit-test:latest
                 
 
