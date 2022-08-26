@@ -33,20 +33,18 @@ workflows:
                 echo "Hello World!"
                 
                 
-                # Let's see what version of go is installed by default
+                # Let's see what version of docker is installed by default
                 
-                go version
-                
+                docker version
                 
                 # Build app
                 
-                cd kem-api-go
-                
-                go build -v ./...
+                docker build -f kem-api-go/dockerfile kem-api-go/
                 
                 # Test app
                 
-                go test -v ./...
+                docker build -f kem-api-go/unit-test.dockerfile -t kem-api-go-unit-test:latest  kem-api-go/
+                docker run kem-api-go-unit-test:latest
                 
 
       - deploy-to-bitrise-io@2: {}
