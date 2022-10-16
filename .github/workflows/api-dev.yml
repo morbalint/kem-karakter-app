@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Build
-        run: docker build -f kem-api-go/dockerfile kem-api-go/
+        run: docker build -f kem-api-go/Dockerfile kem-api-go/
           
-
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Test
         run: |
           docker build -f kem-api-go/unit-test.dockerfile -t kem-api-go-unit-test:${{ github.sha }}  kem-api-go/

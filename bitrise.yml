@@ -2,62 +2,64 @@
 format_version: '11'
 default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
 project_type: other
+trigger_map:
+  - push_branch: dev
+    pipeline: dev
+  - pull_request_target_branch: dev
+    pull_request_source_branch: '*'
+    pipeline: dev
+
+pipelines:
+  dev:
+    stages:
+      - main: {}
+
+stages:
+  main:
+    workflows:
+      - build: {}
+      - test: {}
+
 workflows:
-  primary:
+  build:
     steps:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-      - git-clone@6: {}
+      - git-clone@6: { }
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                # fail if any commands fails
+                set -e
+                set -o pipefail
+                set -x
+                docker version
+                docker build -f kem-api-go/Dockerfile kem-api-go/
+
+      - deploy-to-bitrise-io@2: {}
+  test:
+    steps:
+      - activate-ssh-key@4:
+          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+      - git-clone@6: { }
       - script@1:
           title: Do anything with Script step
           inputs:
-            - content: >-
+            - content: |-
                 #!/usr/bin/env bash
-                
-                # fail if any commands fails
-                
                 set -e
-                
-                # make pipelines' return status equal the last command to exit with
-                a non-zero status, or zero if all commands exit successfully
-                
                 set -o pipefail
-                
-                # debug log
-                
                 set -x
-                
-                
-                # write your script here
-                
-                echo "Hello World!"
-                
-                
-                # Let's see what version of docker is installed by default
-                
                 docker version
-                
-
-                # Build app
-                
-                docker build -f kem-api-go/dockerfile kem-api-go/
-
-
                 # Test app
-                
                 docker build -f kem-api-go/unit-test.dockerfile -t kem-api-go-unit-test:latest  kem-api-go/
-                
                 docker run kem-api-go-unit-test:latest
-                
 
-      - deploy-to-bitrise-io@2: {}
+      - deploy-to-bitrise-io@2: { }
+
+
 meta:
   bitrise.io:
     stack: linux-docker-android-20.04
     machine_type_id: standard
-trigger_map:
-  - push_branch: dev
-    workflow: primary
-  - pull_request_source_branch: '*'
-    pull_request_target_branch: dev
-    workflow: primary
