@@ -1,33 +1,20 @@
-package main
+package handlers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgtype"
+
 	"github.com/morbalint/kem-api-go/dtos"
 	"github.com/morbalint/kem-api-go/repository"
-	"net/http"
 )
 
-func main() {
-
-	_ = repository.SeedCharacters()
-
-	router := gin.Default()
-
-	router.GET("/characters", getCharacters)
-	router.GET("/characters?name=:name", getCharacterByName)
-	router.GET("/characters/:id", getCharacterById)
-	router.POST("/characters", postCharacters)
-
-	_ = router.SetTrustedProxies(nil)
-	_ = router.Run("localhost:8080")
-}
-
-func getCharacters(c *gin.Context) {
+func GetCharacters(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, repository.GetAllCharacters())
 }
 
-func postCharacters(c *gin.Context) {
+func PostCharacters(c *gin.Context) {
 	var newCharacter dtos.Character
 
 	// Call BindJSON to bind the received JSON to
@@ -43,7 +30,7 @@ func postCharacters(c *gin.Context) {
 	}
 }
 
-func getCharacterByName(c *gin.Context) {
+func GetCharacterByName(c *gin.Context) {
 	name := c.Param("name")
 
 	// Loop over the list of albums, looking for
@@ -57,7 +44,7 @@ func getCharacterByName(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Character not found"})
 }
 
-func getCharacterById(c *gin.Context) {
+func GetCharacterById(c *gin.Context) {
 	idStr := c.Param("id")
 	var uuid = pgtype.UUID{}
 	err := uuid.Set(idStr)
