@@ -6,6 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: "go" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "kem-api-go/" # Location of package manifests
     schedule:
       interval: "daily"
