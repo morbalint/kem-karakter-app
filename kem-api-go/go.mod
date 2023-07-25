@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/google/uuid v1.3.0
-	github.com/jackc/pgtype v1.13.0
+	github.com/jackc/pgtype v1.14.0
 	golang.org/x/exp v0.0.0-20220823124025-807a23277127
 )
 
